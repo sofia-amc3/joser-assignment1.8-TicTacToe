@@ -9,6 +9,21 @@ public class GameController : MonoBehaviour
     public GameObject gameOverPanel;
     public Text gameOverText;
     public GameObject restartButton;
+    public DiceRoll diceRollInstance;
+
+    private Color32 initialColor = new Color32(255, 208, 51, 255);
+    private Color32 initialTextColor = new Color32(31, 16, 79, 255);
+    private Color32 decidedColor = new Color32(37, 22, 102, 255);
+    private Color32 decidedTextColor = Color.white;
+    private Color32 disabledColor = new Color32(0, 0, 0, 0);
+
+    public Text p1Text;
+    public Text p2Text;
+
+    public Image background;
+
+    public Image symbolIndicator1;
+    public Image symbolIndicator2;
 
     private string side;
     private int moves;
@@ -21,6 +36,8 @@ public class GameController : MonoBehaviour
         gameOverPanel.SetActive(false);
         moves = 0;
         restartButton.SetActive(false);
+        SetInteractable(false);
+
     }
 
     /* Update is called once per frame
@@ -32,11 +49,19 @@ public class GameController : MonoBehaviour
     void SetGameControllerReferenceForButtons()
     {
         for (int i = 0; i < spaceList.Length; i++) spaceList[i].GetComponentInParent<Space>().SetControllerReference(this);
+        diceRollInstance.SetControllerReference(this);
     }
 
     public string GetSide()
     {
         return side;
+    }
+
+    public void SetSide(string side)
+    {
+        this.side = side;
+        SetInteractable(true);
+        SwapColours();
     }
 
     void ChangeSide()
@@ -65,6 +90,14 @@ public class GameController : MonoBehaviour
             GameOver();
         else if (spaceList[2].text == side && spaceList[4].text == side && spaceList[6].text == side)
             GameOver();
+        else
+        {
+            diceRollInstance.ChangeButtonState(true);
+            diceRollInstance.SwapColours();
+            diceRollInstance.resultText.text = "";
+            SwapColours();
+            diceRollInstance.ResetScore();
+        }
 
         if (moves >= 9)
         {
@@ -73,7 +106,8 @@ public class GameController : MonoBehaviour
             restartButton.SetActive(true);
         }
 
-        ChangeSide();
+        // Disable buttons for dice roll
+        SetInteractable(false);
     }
 
     void GameOver()
@@ -81,9 +115,6 @@ public class GameController : MonoBehaviour
         gameOverPanel.SetActive(true);
         gameOverText.text = side + " wins!";
         restartButton.SetActive(true);
-
-        for (int i = 0; i < spaceList.Length; i++)
-            SetInteractable(false);
     }
 
     void SetInteractable(bool setting)
@@ -97,10 +128,35 @@ public class GameController : MonoBehaviour
         side = "X";
         moves = 0;
         gameOverPanel.SetActive(false);
-        SetInteractable(true);
+        SetInteractable(false);
         restartButton.SetActive(false);
+        diceRollInstance.ChangeButtonState(true);
+        diceRollInstance.SwapColours();
+        SwapColours();
+        diceRollInstance.ResetScore();
+        diceRollInstance.resultText.text = "";
 
         for (int i = 0; i < spaceList.Length; i++)
             spaceList[i].text = "";
+    }
+
+    public void SwapColours()
+    {
+        if (symbolIndicator1.color.Equals(initialColor))
+        {
+            symbolIndicator1.color = decidedColor;
+            symbolIndicator2.color = decidedColor;
+            background.color = disabledColor;
+            p1Text.color = decidedTextColor;
+            p2Text.color = decidedTextColor;
+        }
+        else
+        {
+            symbolIndicator1.color = initialColor;
+            symbolIndicator2.color = initialColor;
+            background.color = decidedColor;
+            p1Text.color = initialTextColor;
+            p2Text.color = initialTextColor;
+        }
     }
 }

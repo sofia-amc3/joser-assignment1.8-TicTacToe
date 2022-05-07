@@ -28,6 +28,8 @@ public class GameController : MonoBehaviour
     private string side;
     private int moves;
 
+    public GameObject rulesPopup;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -161,5 +163,15 @@ public class GameController : MonoBehaviour
             p1Text.color = initialTextColor;
             p2Text.color = initialTextColor;
         }
+    }
+
+    public void OpenRules()
+    {
+        rulesPopup.SetActive(true);
+    }
+
+    public void CloseRules()
+    {
+        rulesPopup.SetActive(false);
     }
 }

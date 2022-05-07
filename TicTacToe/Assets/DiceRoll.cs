@@ -26,6 +26,8 @@ public class DiceRoll : MonoBehaviour
     public Text p1Text;
     public Text p2Text;
 
+    public Image dieImage;
+
     public Image scoreIndicator1;
     public Image scoreIndicator2;
 
@@ -41,11 +43,13 @@ public class DiceRoll : MonoBehaviour
         {
             case "X":
                 player1result = result;
+                SetImage(result);
                 p1Score.text = result.ToString();
                 break;
 
             case "O":
                 player2result = result;
+                SetImage(result);
                 p2Score.text = result.ToString();
                 // After both of the dice rolls, lock the button and compare results.
                 ChangeButtonState(false);
@@ -57,6 +61,49 @@ public class DiceRoll : MonoBehaviour
                 break;
         }
         ChangeSide();
+    }
+
+    public void ResetImage()
+    {
+        if (dieImage.gameObject.activeInHierarchy)
+        {
+            dieImage.gameObject.SetActive(false);
+        }
+        dieImage.sprite = null;
+    }
+
+    private void SetImage(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                dieImage.sprite = Resources.Load<Sprite>("Die1");
+                break;
+
+            case 2:
+                dieImage.sprite = Resources.Load<Sprite>("Die2");
+                break;
+
+            case 3:
+                dieImage.sprite = Resources.Load<Sprite>("Die3");
+                break;
+
+            case 4:
+                dieImage.sprite = Resources.Load<Sprite>("Die4");
+                break;
+
+            case 5:
+                dieImage.sprite = Resources.Load<Sprite>("Die5");
+                break;
+
+            case 6:
+                dieImage.sprite = Resources.Load<Sprite>("Die6");
+                break;
+        }
+        if (!dieImage.gameObject.activeInHierarchy)
+        {
+            dieImage.gameObject.SetActive(true);
+        }
     }
 
     private void ChangeSide()
@@ -91,18 +138,23 @@ public class DiceRoll : MonoBehaviour
             resultText.text = "Tie! Both players need to roll again.";
             ChangeButtonState(true);
             yield return new WaitForSeconds(1.5f);
+            ResetImage();
             ResetScore();
         }
         else if (player1result > player2result)
         {
             resultText.text = "Player 1 got the highest score!";
+            yield return new WaitForSeconds(1.5f);
             gameController.SetSide("X");
+            ResetImage();
             SwapColours();
         }
         else
         {
             resultText.text = "Player 2 got the highest score!";
+            yield return new WaitForSeconds(1.5f);
             gameController.SetSide("O");
+            ResetImage();
             SwapColours();
         }
     }

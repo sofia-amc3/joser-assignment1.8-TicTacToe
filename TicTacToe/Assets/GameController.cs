@@ -30,6 +30,8 @@ public class GameController : MonoBehaviour
 
     public GameObject rulesPopup;
 
+    public Image[] ticTacToeLines;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -154,6 +156,10 @@ public class GameController : MonoBehaviour
             background.color = disabledColor;
             p1Text.color = decidedTextColor;
             p2Text.color = decidedTextColor;
+            foreach (var line in ticTacToeLines)
+            {
+                line.color = decidedColor;
+            }
         }
         else
         {
@@ -162,6 +168,10 @@ public class GameController : MonoBehaviour
             background.color = decidedColor;
             p1Text.color = initialTextColor;
             p2Text.color = initialTextColor;
+            foreach (var line in ticTacToeLines)
+            {
+                line.color = initialColor;
+            }
         }
     }
 

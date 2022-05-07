@@ -113,7 +113,10 @@ public class GameController : MonoBehaviour
     void GameOver()
     {
         gameOverPanel.SetActive(true);
-        gameOverText.text = side + " wins!";
+        
+        if(side == "X") gameOverText.text = "Player 01 wins!";
+        else gameOverText.text = "Player 02 wins!";
+
         restartButton.SetActive(true);
     }
 

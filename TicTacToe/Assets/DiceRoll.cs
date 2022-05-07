@@ -64,12 +64,12 @@ public class DiceRoll : MonoBehaviour
         if (rollSide == "X")
         {
             rollSide = "O";
-            infoText.text = "Player 2, roll the die.";
+            infoText.text = "Player 2, roll the dice.";
         }
         else
         {
             rollSide = "X";
-            infoText.text = "Player 1, roll the die.";
+            infoText.text = "Player 1, roll the dice.";
         }
     }
 

@@ -184,4 +184,9 @@ public class GameController : MonoBehaviour
     {
         rulesPopup.SetActive(false);
     }
+
+    public void CloseGame()
+    {
+        Application.Quit();
+    }
 }
